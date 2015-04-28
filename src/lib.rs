@@ -2,7 +2,9 @@ pub fn is_prime(x: i32) -> bool {
     if x == 2 || x == 1 {
         return true;
     }
-    for i in 2..x {
+    let upper_limit: i32 = (x as f64).sqrt().ceil() as i32;
+
+    for i in 2..upper_limit {
         if x % i == 0 && i != x {
             return false;
         }
