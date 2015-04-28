@@ -1,3 +1,19 @@
+pub fn is_prime(x: i32) -> bool {
+    if x == 2 || x == 1 {
+        return true;
+    }
+    for i in 2..x {
+        if x % i == 0 && i != x {
+            return false;
+        }
+    }
+    true
+}
+
 #[test]
-fn it_works() {
+fn basic_prime() {
+    assert!(is_prime(3));
+    assert!(is_prime(5));
+    assert!(!is_prime(8));
+    assert!(is_prime(17));
 }
