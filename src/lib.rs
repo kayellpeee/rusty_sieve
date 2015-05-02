@@ -14,14 +14,13 @@ pub fn is_prime(x: i32) -> bool {
     // so we'll create a sieve of *potential* divisors between 1..√x
     // ( a sieve is essentially all prime numbers up to a certain point
     let upper_limit: i32 = (x as f64).sqrt().ceil() as i32;
-    let mut sieve = (1..upper_limit).filter(|x| { x % 2 == 1 && x != 2 }).collect::<Vec<i32>>();
+    let mut sieve = (1..upper_limit).filter(|x| { x % 2 == 1 && *x != 2 }).collect::<Vec<i32>>();
 
     // check if the numbers in the sieve are divisors for x (i.e. x is prime)
-    let mut result: bool;
-    for num in sieve {
-       result = prime_test(num, &x, &mut sieve);
-        if result {
-            break;
+    let mut result: bool = false;
+    for i in 1..upper_limit {
+        if sieve.contains(&i) {
+            result = prime_test(i, &x, &mut sieve);
         }
     }
     result
