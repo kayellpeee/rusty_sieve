@@ -1,3 +1,4 @@
+ #![feature(step_by)]
 pub fn is_prime(x: i32) -> bool {
     // Our sieve goes from 1 to sqrt of x - catch these small cases first to avoid
     // cases where sieve = vec![1] (if x >= 9 sieve will be vec![1, 3] which is ok)
@@ -38,7 +39,9 @@ pub fn prime_test(num: i32, x: &i32, sieve: &mut Vec<i32>) -> bool {
                 if multiple == *x {
                     return true
                 }
-                sieve.iter().position(|x| *x == multiple).map(|element| &sieve.remove(element));
+                if sieve.contains(&multiple) {
+                    sieve.remove(multiple as usize);
+                }
             }
         } else {
             if x % i == 0 {
