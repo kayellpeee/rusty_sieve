@@ -58,4 +58,8 @@ fn basic_prime() {
     assert!(is_prime(5));
     assert!(!is_prime(8));
     assert!(is_prime(17));
+    assert!(!is_prime(40));
+    assert!(is_prime(39));
+    assert!(!is_prime(100));
+    assert!(is_prime(97));
 }
