@@ -1,4 +1,3 @@
- #![feature(step_by)]
 pub fn is_prime(x: i32) -> bool {
    // Handle small edge cases first
     if x == 1 || x == 2 {
@@ -10,41 +9,20 @@ pub fn is_prime(x: i32) -> bool {
     // a number is prime if it is only divisible by 1 & itself
     // once we pass the sqrt of a number, we don't need to proceed checking for divisors
     let upper_limit: i32 = (x as f64).sqrt().ceil() as i32;
-    // let mut sieve = (1..upper_limit).filter(|x| { x % 2 == 1 && *x != 2 }).collect::<Vec<i32>>();
 
-    // let mut result: bool = false;
     for i in 2..upper_limit {
         if x % i == 0 {
-            // result = prime_test(i, &x, &mut sieve);
             return false;
         }
     }
     true
 }
 
-pub fn prime_test(num: i32, x: &i32, sieve: &mut Vec<i32>) -> bool {
+pub fn prime_sieve(start: i32, end: i32) -> Vec<i32> {
     // all numbers in the sieve should be prime
     // start at the first prime and remove all of it's multiples
-    // (if we run across our target number during this^ process then it is not prime
-    // and we can return false)
-    // if we hit our target and it hasn't been removed then we can assume it's prime
-    for i in (2..num).collect::<Vec<i32>>() {
-        if num % i != 0 {
-            for multiple in (i..x + 1).step_by(i).collect::<Vec<i32>>() {
-                if multiple == *x {
-                    return false;
-                }
-                if sieve.contains(&multiple) {
-                    sieve.remove(multiple as usize);
-                }
-            }
-        } else {
-            if x % i == 0 {
-                return true;
-            }
-        }
-    }
-    false
+    let sieve = (start..end).collect::<Vec<_>>();
+    sieve
 }
 
 #[test]
@@ -63,4 +41,8 @@ fn double_digits(){
 #[test]
 fn triple_digits() {
     assert!(!is_prime(100));
+}
+#[test]
+fn sieve_to_hunnid(){
+    assert_eq!(prime_sieve(0, 100), (0..100).filter(|x| is_prime(*x)).collect::<Vec<_>>());
 }
