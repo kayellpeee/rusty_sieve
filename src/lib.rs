@@ -23,7 +23,7 @@ pub fn is_prime(x: &i32) -> bool {
 pub fn prime_sieve(start: i32, end: i32) -> Vec<i32> {
     // all numbers in the sieve should be prime
     // start at the first prime and remove all of it's multiples
-    let mut sieve = (start..end).collect::<Vec<_>>();
+    let mut sieve = (start..end + 1).collect::<Vec<_>>();
 
     if sieve.contains(&0) {
         let index = sieve.position_elem(&0).unwrap();
@@ -34,11 +34,13 @@ pub fn prime_sieve(start: i32, end: i32) -> Vec<i32> {
         sieve.remove(index);
     }
 
-    for num in start..end {
-        if sieve.contains(&num) && !is_prime(&num) {
-            for multiple in (num..end).step_by(num).collect::<Vec<_>>() {
-                let index = sieve.binary_search(&multiple).unwrap();
-                sieve.remove(index);
+    for num in (start..end + 1) {
+        if sieve.contains(&num) && is_prime(&num) {
+            for multiple in (num * 2..end + 1).step_by(num).collect::<Vec<_>>() {
+                if sieve.contains(&multiple) {
+                    let index = sieve.position_elem(&multiple).unwrap();
+                    sieve.remove(index);
+                }
             }
         }
     }
