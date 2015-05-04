@@ -1,4 +1,5 @@
 #![feature(step_by)]
+#![feature(collections)]
 pub fn is_prime(x: &i32) -> bool {
    // Handle small edge cases first
     if *x == 2 {
@@ -23,10 +24,22 @@ pub fn prime_sieve(start: i32, end: i32) -> Vec<i32> {
     // all numbers in the sieve should be prime
     // start at the first prime and remove all of it's multiples
     let mut sieve = (start..end).collect::<Vec<_>>();
+
+    if sieve.contains(&0) {
+        let index = sieve.position_elem(&0).unwrap();
+        sieve.remove(index);
+    }
+    if sieve.contains(&1) {
+        let index = sieve.position_elem(&1).unwrap();
+        sieve.remove(index);
+    }
+
     for num in start..end {
-        if !is_prime(&num) {
-                let index = sieve.binary_search(&num).unwrap();
+        if sieve.contains(&num) && !is_prime(&num) {
+            for multiple in (num..end).step_by(num).collect::<Vec<_>>() {
+                let index = sieve.binary_search(&multiple).unwrap();
                 sieve.remove(index);
+            }
         }
     }
     sieve
